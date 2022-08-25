@@ -19,6 +19,11 @@ const Form = (() => {
               calculateElec();
               calculateWater();
             },
+            onEnter: function () {
+              if (!validatInput()) return;
+              calculateElec();
+              calculateWater();
+            },
           },
         },
         { width: 25 },
@@ -33,6 +38,11 @@ const Form = (() => {
           width: 200,
           on: {
             onChange: function () {
+              if (!validatInput()) return;
+              calculateElec();
+              calculateWater();
+            },
+            onEnter: function () {
               if (!validatInput()) return;
               calculateElec();
               calculateWater();
@@ -57,6 +67,16 @@ const Form = (() => {
           disabled: true,
           width: 220,
           labelWidth: 120,
+          on: {
+            onChange: function () {
+              calculateElec();
+              calculateTotalMoney();
+            },
+            onEnter: function () {
+              calculateElec();
+              calculateTotalMoney();
+            },
+          },
         },
         {
           view: 'icon',
@@ -110,12 +130,14 @@ const Form = (() => {
           value: '',
           label: 'Số cũ',
           pattern: { mask: '##############', allow: /[0-9]/g },
-
           width: 200,
           on: {
             onChange: function () {
               calculateElec();
-
+              calculateTotalMoney();
+            },
+            onEnter: function () {
+              calculateElec();
               calculateTotalMoney();
             },
           },
@@ -132,6 +154,10 @@ const Form = (() => {
           width: 200,
           on: {
             onChange: function () {
+              calculateWater();
+              calculateTotalMoney();
+            },
+            onEnter: function () {
               calculateWater();
               calculateTotalMoney();
             },
@@ -155,6 +181,16 @@ const Form = (() => {
           disabled: true,
           width: 220,
           labelWidth: 120,
+          on: {
+            onChange: function () {
+              calculateWater();
+              calculateTotalMoney();
+            },
+            onEnter: function () {
+              calculateWater();
+              calculateTotalMoney();
+            },
+          },
         },
         {
           view: 'icon',
@@ -214,6 +250,9 @@ const Form = (() => {
             onChange: function () {
               calculateTotalMoney();
             },
+            onEnter: function () {
+              calculateTotalMoney();
+            },
           },
         },
       ],
@@ -233,6 +272,9 @@ const Form = (() => {
           pattern: { mask: '###########', allow: /[0-9]/g },
           on: {
             onChange: function () {
+              calculateTotalMoney();
+            },
+            onEnter: function () {
               calculateTotalMoney();
             },
           },
