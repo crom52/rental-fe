@@ -53,9 +53,37 @@ const Form = (() => {
           view: 'text',
           value: '20000',
           id: 'elecPrice',
-          label: 'Đơn giá',
-          readonly: true,
-          width: 200,
+          label: 'Giá điện (/kWh)',
+          disabled: true,
+          width: 220,
+          labelWidth: 120,
+        },
+        {
+          view: 'icon',
+          icon: 'wxi-pencil',
+          id: 'iconEditElecPrice',
+          tooltip: 'Điều chỉnh giá điện',
+          on: {
+            onItemClick: function () {
+              $$('elecPrice').enable();
+              $$('iconEditElecPrice').hide();
+              $$('iconApplyElecPrice').show();
+            },
+          },
+        },
+        {
+          view: 'icon',
+          icon: 'wxi-check',
+          id: 'iconApplyElecPrice',
+          hidden: true,
+          tooltip: 'Xác nhận',
+          on: {
+            onItemClick: function () {
+              $$('elecPrice').disable();
+              $$('iconApplyElecPrice').hide();
+              $$('iconEditElecPrice').show();
+            },
+          },
         },
         { width: 25 },
         {
@@ -123,9 +151,37 @@ const Form = (() => {
           view: 'text',
           value: '20000',
           id: 'waterPrice',
-          label: 'Đơn giá',
-          readonly: true,
-          width: 200,
+          label: 'Giá nước (/m3)',
+          disabled: true,
+          width: 220,
+          labelWidth: 120,
+        },
+        {
+          view: 'icon',
+          icon: 'wxi-pencil',
+          id: 'iconEditWaterPrice',
+          tooltip: 'Điều chỉnh giá nuóc',
+          on: {
+            onItemClick: function () {
+              $$('waterPrice').enable();
+              $$('iconApplyWaterPrice').show();
+              $$('iconEditWaterPrice').hide();
+            },
+          },
+        },
+        {
+          view: 'icon',
+          icon: 'wxi-check',
+          id: 'iconApplyWaterPrice',
+          hidden: true,
+          tooltip: 'Xác nhận',
+          on: {
+            onItemClick: function () {
+              $$('waterPrice').disable();
+              $$('iconApplyWaterPrice').hide();
+              $$('iconEditWaterPrice').show();
+            },
+          },
         },
         { width: 25 },
         {
@@ -143,7 +199,7 @@ const Form = (() => {
 
     const rentalPrice = {
       cols: [
-        { width: 903 },
+        { width: 960 },
         {
           id: 'rentalPrice',
           name: 'rentalPrice',
@@ -165,7 +221,7 @@ const Form = (() => {
 
     const otherPrice = {
       cols: [
-        { width: 903 },
+        { width: 960 },
         {
           id: 'otherPrice',
           name: 'otherPrice',
@@ -185,7 +241,7 @@ const Form = (() => {
     };
     const totalMoney = {
       cols: [
-        { width: 903 },
+        { width: 960 },
         {
           id: 'totalMoney',
           name: 'totalMoney',
