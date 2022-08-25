@@ -257,7 +257,7 @@ const Form = (() => {
     const rentalPeriod = {
       id: 'rentalPeriod',
       view: 'text',
-      value: 'Hoá đơn phòng trọ số xx',
+      value: 'Hoá đơn phòng trọ số ... tháng ...',
       label: '',
       // width: 200,
       height: 80,
