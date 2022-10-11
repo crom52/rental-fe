@@ -153,7 +153,7 @@ const Form = (() => {
           label: 'Số mới',
           width: 200,
           on: {
-            onChange: function () {
+            onChange: function (newVal) {
               calculateWater();
               calculateTotalMoney();
             },
@@ -298,12 +298,45 @@ const Form = (() => {
     };
     const rentalPeriod = {
       id: 'rentalPeriod',
-      view: 'text',
-      value: 'Hoá đơn phòng trọ số ... tháng ...',
-      label: '',
-      // width: 200,
-      height: 80,
-      css: 'font-size:80px',
+      label: 'Tháng',
+      view: 'combo',
+      options: [
+        { id: '01', value: 'Tháng 1' },
+        { id: '02', value: 'Tháng 2' },
+        { id: '03', value: 'Tháng 3' },
+        { id: '04', value: 'Tháng 4' },
+        { id: '05', value: 'Tháng 5' },
+        { id: '06', value: 'Tháng 6' },
+        { id: '07', value: 'Tháng 7' },
+        { id: '08', value: 'Tháng 8' },
+        { id: '09', value: 'Tháng 9' },
+        { id: '10', value: 'Tháng 10' },
+        { id: '11', value: 'Tháng 11' },
+        { id: '12', value: 'Tháng 12' },
+      ],
+      align: 'left',
+      width: 200,
+    };
+    const room = {
+      id: 'roomNumber',
+      label: 'Phòng',
+      view: 'combo',
+      options: [
+        { id: '01', value: '1' },
+        { id: '02', value: '2' },
+        { id: '03', value: '3' },
+        { id: '04', value: '4' },
+        { id: '05', value: '5' },
+        { id: '06', value: '6' },
+        { id: '07', value: '7' },
+        { id: '08', value: '8' },
+        { id: '09', value: '9' },
+        { id: '10', value: '10' },
+        { id: '11', value: '11' },
+        { id: '12', value: '12' },
+      ],
+      align: 'left',
+      width: 200,
     };
 
     const note = {
@@ -316,20 +349,50 @@ const Form = (() => {
 
       height: 80,
     };
+    const buttons = {
+      id: 'buttons',
+      view: 'layout',
+
+      rows: [
+        {
+          view: 'button',
+          id: 'saveButton',
+          label: 'Lưu',
+          width: 80,
+          labelWidth: 30,
+          align: 'right',
+          on: {
+            onItemClick: async function () {
+              let confirm = await webix.confirm({
+                ok: 'Có',
+                cancel: 'Không',
+                text: 'Bạn có muốn lưu hóa đơn không?',
+              });
+              if (confirm) {
+                //call api
+                Biz.saveBill();
+                webix.message('Đã lưu thành công');
+              }
+            },
+          },
+        },
+      ],
+    };
 
     const form = {
       view: 'form',
       container: 'rentalForm',
-      // borderless:true,
       id: 'rentalForm',
       rows: [
         rentalPeriod,
+        room,
         elec,
         water,
         rentalPrice,
         otherPrice,
         totalMoney,
         note,
+        buttons,
       ],
     };
 
@@ -406,6 +469,7 @@ const Form = (() => {
       totalWaterMoney + totalElecMoney + rentalPrice + otherPrice;
     $$('totalMoney').setValue(totalMoney);
   };
+
   return {
     initUI,
   };
