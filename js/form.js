@@ -371,7 +371,7 @@ const Form = (() => {
               if (confirm) {
                 //call api
                 Biz.saveBill();
-                webix.message('Đã lưu thành công');
+                webix.message('Đã lưu thành công', 'info', 3000);
               }
             },
           },
