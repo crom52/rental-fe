@@ -1,7 +1,13 @@
 const Biz = (() => {
-  const saveBill = async () => {
+  const saveBill = () => {
     let bill = {
-      id: Number($$('roomNumber').getValue() + $$('rentalPeriod').getValue()),
+      id:
+        $$('roomNumber').getValue() +
+        '-' +
+        $$('rentalPeriod').getValue() +
+        '-' +
+        $$('rentalPeriodYear').getValue(),
+
       rentalPeriod: $$('rentalPeriod').getValue(),
       roomNumber: $$('roomNumber').getValue(),
       oldElecNumber: $$('oldElecNumber').getValue(),
@@ -19,8 +25,7 @@ const Biz = (() => {
       totalMoney: $$('totalMoney').getValue(),
       note: $$('note').getValue(),
     };
-    console.log(bill);
-    let rs = await Api.saveBill(bill);
+    return Api.saveBill(bill);
   };
   return {
     saveBill,

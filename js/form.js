@@ -297,25 +297,61 @@ const Form = (() => {
       ],
     };
     const rentalPeriod = {
-      id: 'rentalPeriod',
-      label: 'Tháng',
-      view: 'combo',
-      options: [
-        { id: '01', value: 'Tháng 1' },
-        { id: '02', value: 'Tháng 2' },
-        { id: '03', value: 'Tháng 3' },
-        { id: '04', value: 'Tháng 4' },
-        { id: '05', value: 'Tháng 5' },
-        { id: '06', value: 'Tháng 6' },
-        { id: '07', value: 'Tháng 7' },
-        { id: '08', value: 'Tháng 8' },
-        { id: '09', value: 'Tháng 9' },
-        { id: '10', value: 'Tháng 10' },
-        { id: '11', value: 'Tháng 11' },
-        { id: '12', value: 'Tháng 12' },
+      cols: [
+        {
+          id: 'rentalPeriod',
+          label: 'Tháng',
+          view: 'combo',
+          options: [
+            { id: '01', value: 'Tháng 1' },
+            { id: '02', value: 'Tháng 2' },
+            { id: '03', value: 'Tháng 3' },
+            { id: '04', value: 'Tháng 4' },
+            { id: '05', value: 'Tháng 5' },
+            { id: '06', value: 'Tháng 6' },
+            { id: '07', value: 'Tháng 7' },
+            { id: '08', value: 'Tháng 8' },
+            { id: '09', value: 'Tháng 9' },
+            { id: '10', value: 'Tháng 10' },
+            { id: '11', value: 'Tháng 11' },
+            { id: '12', value: 'Tháng 12' },
+          ],
+          align: 'left',
+          width: 200,
+        },
+        { width: 50 },
+        {
+          id: 'rentalPeriodYear',
+          label: 'Năm',
+          labelWidth: 50,
+          view: 'combo',
+          options: [
+            { id: '2022', value: '2022' },
+            { id: '2023', value: '2023' },
+            { id: '2024', value: '2024' },
+            { id: '2025', value: '2025' },
+            { id: '2026', value: '2026' },
+          ],
+          align: 'left',
+          width: 150,
+          on: {
+            onItemClick: function () {
+              let combo = $$('rentalPeriodYear').getList();
+              let data = combo.serialize();
+              data.splice(3, 5);
+              for (let i = 1; i <= 3; i++) {
+                let id = (Number(data[data.length - 1].id) + i).toString();
+                let inscrease = {
+                  id: id,
+                  value: id,
+                };
+                combo.parse(inscrease);
+                combo.refresh();
+              }
+            },
+          },
+        },
       ],
-      align: 'left',
-      width: 200,
     };
     const room = {
       id: 'roomNumber',
@@ -370,8 +406,12 @@ const Form = (() => {
               });
               if (confirm) {
                 //call api
-                Biz.saveBill();
-                webix.message('Đã lưu thành công', 'info', 3000);
+                let rs = await Biz.saveBill();
+                if (rs.status == 'OK') {
+                  webix.message('Đã lưu thành công', 'success', 3000);
+                } else {
+                  webix.message('Đã có lỗi xảy ra', 'error', 3000);
+                }
               }
             },
           },
