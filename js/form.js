@@ -318,6 +318,11 @@ const Form = (() => {
           ],
           align: 'left',
           width: 200,
+          on: {
+            onChange: () => {
+              fillPreviousInfo();
+            },
+          },
         },
         { width: 50 },
         {
@@ -335,6 +340,9 @@ const Form = (() => {
           align: 'left',
           width: 150,
           on: {
+            onChange: () => {
+              fillPreviousInfo();
+            },
             onItemClick: function () {
               let combo = $$('rentalPeriodYear').getList();
               let data = combo.serialize();
@@ -373,6 +381,11 @@ const Form = (() => {
       ],
       align: 'left',
       width: 200,
+      on: {
+        onChange: () => {
+          fillPreviousInfo();
+        },
+      },
     };
 
     const note = {
@@ -508,6 +521,16 @@ const Form = (() => {
     let totalMoney =
       totalWaterMoney + totalElecMoney + rentalPrice + otherPrice;
     $$('totalMoney').setValue(totalMoney);
+  };
+
+  const fillPreviousInfo = () => {
+    let roomNo = $$('roomNumber').getValue();
+    let rentalPeriod = $$('rentalPeriod').getValue();
+    let rentalPeriodYear = $$('rentalPeriodYear').getValue();
+    if (!roomNo || !rentalPeriod || !rentalPeriodYear) {
+      return;
+    }
+    return Biz.fillPreviousInfo(roomNo, rentalPeriod + '-' + rentalPeriodYear);
   };
 
   return {

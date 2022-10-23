@@ -8,7 +8,8 @@ const Biz = (() => {
         '-' +
         $$('rentalPeriodYear').getValue(),
 
-      rentalPeriod: $$('rentalPeriod').getValue(),
+      rentalPeriod:
+        $$('rentalPeriod').getValue() + $$('rentalPeriodYear').getValue(),
       roomNumber: $$('roomNumber').getValue(),
       oldElecNumber: $$('oldElecNumber').getValue(),
       newElecNumber: $$('newElecNumber').getValue(),
@@ -27,7 +28,21 @@ const Biz = (() => {
     };
     return Api.saveBill(bill);
   };
+
+  const fillPreviousInfo = async (roomNo, rentalPeriod) => {
+    let rs = await Api.getPreviousInfoBill(roomNo, rentalPeriod);
+    if (rs.status == 'OK' && rs.data) {
+      let previousInfo = rs.data;
+      $$('oldElecNumber').setValue(previousInfo.oldElecNumber);
+      $$('oldWaterNumber').setValue(previousInfo.oldWaterNumber);
+    } else {
+      $$('oldElecNumber').setValue('');
+      $$('oldWaterNumber').setValue('');
+    }
+  };
+
   return {
     saveBill,
+    fillPreviousInfo,
   };
 })();
