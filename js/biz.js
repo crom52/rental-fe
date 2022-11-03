@@ -9,7 +9,7 @@ const Biz = (() => {
         $$('rentalPeriodYear').getValue(),
 
       rentalPeriod:
-        $$('rentalPeriod').getValue() + $$('rentalPeriodYear').getValue(),
+        $$('rentalPeriod').getValue() + '-' + $$('rentalPeriodYear').getValue(),
       roomNumber: $$('roomNumber').getValue(),
       oldElecNumber: $$('oldElecNumber').getValue(),
       currentElecNumber: $$('currentElecNumber').getValue(),
