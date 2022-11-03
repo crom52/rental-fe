@@ -133,10 +133,12 @@ const Form = (() => {
           width: 200,
           on: {
             onChange: function () {
+              if (!validatInput()) return;
               calculateElec();
               calculateTotalMoney();
             },
             onEnter: function () {
+              if (!validatInput()) return;
               calculateElec();
               calculateTotalMoney();
             },
@@ -154,10 +156,12 @@ const Form = (() => {
           width: 200,
           on: {
             onChange: function (newVal) {
+              if (!validatInput()) return;
               calculateWater();
               calculateTotalMoney();
             },
             onEnter: function () {
+              if (!validatInput()) return;
               calculateWater();
               calculateTotalMoney();
             },
@@ -319,6 +323,9 @@ const Form = (() => {
           align: 'left',
           width: 200,
           on: {
+            onAfterRender: () => {
+              $$('rentalPeriod').setValue(new Date().getUTCMonth());
+            },
             onChange: () => {
               fillPreviousInfo();
             },
@@ -423,29 +430,56 @@ const Form = (() => {
 
       rows: [
         {
-          view: 'button',
-          id: 'saveButton',
-          label: 'Lưu',
-          width: 80,
-          labelWidth: 30,
           align: 'right',
-          on: {
-            onItemClick: async function () {
-              let confirm = await webix.confirm({
-                ok: 'Có',
-                cancel: 'Không',
-                text: 'Bạn có muốn lưu hóa đơn không?',
-              });
-              if (confirm) {
-                let rs = await Biz.saveBill();
-                if (rs.status == 'OK') {
-                  webix.message('Đã lưu thành công', 'success', 3000);
-                } else {
-                  webix.message('Đã có lỗi xảy ra', 'error', 3000);
-                }
-              }
+          width: 200,
+          css: { float: 'right', width: 'max-content !important' },
+          cols: [
+            {
+              view: 'button',
+              id: 'clearFormButton',
+              width: 80,
+              labelWidth: 30,
+              label: 'Nhập lại',
+              on: {
+                onItemClick: async () => {
+                  let confirm = await webix.confirm({
+                    ok: 'Có',
+                    cancel: 'Không',
+                    text: 'Bạn có muốn nhập lại không?',
+                  });
+                  if (confirm) {
+                    clearForm();
+                  }
+                },
+              },
             },
-          },
+            { width: 30 },
+            {
+              view: 'button',
+              id: 'saveButton',
+              label: 'Lưu',
+              width: 80,
+              labelWidth: 30,
+              align: 'right',
+              on: {
+                onItemClick: async function () {
+                  let confirm = await webix.confirm({
+                    ok: 'Có',
+                    cancel: 'Không',
+                    text: 'Bạn có muốn lưu hóa đơn không?',
+                  });
+                  if (confirm) {
+                    let rs = await Biz.saveBill();
+                    if (rs.status == 'OK') {
+                      webix.message('Đã lưu thành công', 'success', 3000);
+                    } else {
+                      webix.message('Đã có lỗi xảy ra', 'error', 3000);
+                    }
+                  }
+                },
+              },
+            },
+          ],
         },
       ],
     };
@@ -552,6 +586,23 @@ const Form = (() => {
     return Biz.fillPreviousInfo(roomNo, rentalPeriod + '-' + rentalPeriodYear);
   };
 
+  const clearForm = () => {
+    $$('roomNumber').setValue('');
+    $$('rentalPeriod').setValue(new Date().getUTCMonth());
+    $$('rentalPeriodYear').setValue(new Date().getUTCFullYear());
+    $$('oldElecNumber').setValue('');
+    $$('currentElecNumber').setValue('');
+    $$('usedElec').setValue('');
+    $$('totalElecMoney').setValue('');
+    $$('oldWaterNumber').setValue('');
+    $$('newWaterNumber').setValue('');
+    $$('usedWater').setValue('');
+    $$('totalWaterMoney').setValue('');
+    $$('rentalPrice').setValue('');
+    $$('otherPrice').setValue('');
+    $$('totalMoney').setValue('');
+    $$('note').setValue('');
+  };
   return {
     initUI,
   };
