@@ -29,8 +29,8 @@ const Form = (() => {
         { width: 25 },
         {
           view: 'text',
-          id: 'newElecNumber',
-          name: 'newElecNumber',
+          id: 'currentElecNumber',
+          name: 'currentElecNumber',
           required: true,
           pattern: { mask: '##############', allow: /[0-9]/g },
           value: '',
@@ -54,7 +54,7 @@ const Form = (() => {
           view: 'text',
           id: 'usedElec',
           value: '',
-          label: 'Số kí điện',
+          label: 'Sử dụng',
           readonly: true,
           width: 200,
         },
@@ -168,7 +168,7 @@ const Form = (() => {
           view: 'text',
           id: 'usedWater',
           value: '',
-          label: 'Số kí nước',
+          label: 'Sử dụng',
           readonly: true,
           width: 200,
         },
@@ -331,6 +331,7 @@ const Form = (() => {
           labelWidth: 50,
           view: 'combo',
           options: [
+            { id: '2021', value: '2021' },
             { id: '2022', value: '2022' },
             { id: '2023', value: '2023' },
             { id: '2024', value: '2024' },
@@ -342,6 +343,9 @@ const Form = (() => {
           on: {
             onChange: () => {
               fillPreviousInfo();
+            },
+            onAfterRender: () => {
+              $$('rentalPeriodYear').setValue(new Date().getUTCFullYear());
             },
             onItemClick: function () {
               let combo = $$('rentalPeriodYear').getList();
@@ -362,30 +366,45 @@ const Form = (() => {
       ],
     };
     const room = {
-      id: 'roomNumber',
-      label: 'Phòng',
-      view: 'combo',
-      options: [
-        { id: '01', value: '1' },
-        { id: '02', value: '2' },
-        { id: '03', value: '3' },
-        { id: '04', value: '4' },
-        { id: '05', value: '5' },
-        { id: '06', value: '6' },
-        { id: '07', value: '7' },
-        { id: '08', value: '8' },
-        { id: '09', value: '9' },
-        { id: '10', value: '10' },
-        { id: '11', value: '11' },
-        { id: '12', value: '12' },
-      ],
-      align: 'left',
-      width: 200,
-      on: {
-        onChange: () => {
-          fillPreviousInfo();
+      cols: [
+        {
+          id: 'roomNumber',
+          label: 'Phòng',
+          view: 'text',
+          // options: [
+          //   { id: '01', value: '1' },
+          //   { id: '02', value: '2' },
+          //   { id: '03', value: '3' },
+          //   { id: '04', value: '4' },
+          //   { id: '05', value: '5' },
+          //   { id: '06', value: '6' },
+          //   { id: '07', value: '7' },
+          //   { id: '08', value: '8' },
+          //   { id: '09', value: '9' },
+          //   { id: '10', value: '10' },
+          //   { id: '11', value: '11' },
+          //   { id: '12', value: '12' },
+          // ],
+          align: 'left',
+          width: 200,
+          on: {
+            onChange: () => {
+              fillPreviousInfo();
+            },
+          },
         },
-      },
+        {
+          width: 50,
+        },
+        {
+          view: 'text',
+          id: 'renterMasterName',
+          disabled: true,
+          label: 'Tên',
+          width: 255,
+          labelWidth: 50,
+        },
+      ],
     };
 
     const note = {
@@ -418,7 +437,6 @@ const Form = (() => {
                 text: 'Bạn có muốn lưu hóa đơn không?',
               });
               if (confirm) {
-                //call api
                 let rs = await Biz.saveBill();
                 if (rs.status == 'OK') {
                   webix.message('Đã lưu thành công', 'success', 3000);
@@ -439,6 +457,7 @@ const Form = (() => {
       rows: [
         rentalPeriod,
         room,
+        { height: 30 },
         elec,
         water,
         rentalPrice,
@@ -454,7 +473,7 @@ const Form = (() => {
 
   const calculateElec = () => {
     let oldElec = $$('oldElecNumber').getValue();
-    let newElec = $$('newElecNumber').getValue();
+    let newElec = $$('currentElecNumber').getValue();
 
     if (!oldElec || !newElec) {
       return;
@@ -489,7 +508,7 @@ const Form = (() => {
     let newWater = $$('newWaterNumber').getValue();
 
     let oldElec = $$('oldElecNumber').getValue();
-    let newElec = $$('newElecNumber').getValue();
+    let newElec = $$('currentElecNumber').getValue();
 
     if (oldWater && newWater) {
       if (Number(newWater) < Number(oldWater)) {
@@ -502,7 +521,7 @@ const Form = (() => {
     if (newElec && oldElec) {
       if (Number(newElec) < Number(oldElec)) {
         $$('oldElecNumber').validate();
-        $$('newElecNumber').validate();
+        $$('currentElecNumber').validate();
         webix.alert('Số điện mới phải lớn hơn số điện cũ');
         return false;
       }
