@@ -1,0 +1,14 @@
+/*   .highlight .webix_column>div:nth-child(even){
+    background-color:#f7f7b4
+}
+.highlight .webix_column>div:nth-child(odd){
+    background-color:#eeeee8;
+}   */
+
+.webix_column .webix_row_select {
+    background-color:#f7f6d4 !important;      
+}
+
+.webix_table_checkbox{
+    pointer-events: none;
+}

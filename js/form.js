@@ -427,13 +427,13 @@ const Form = (() => {
     const buttons = {
       id: 'buttons',
       view: 'layout',
-
       rows: [
         {
           align: 'right',
           width: 200,
-          css: { float: 'right', width: 'max-content !important' },
+          css: { float: 'right' },
           cols: [
+            { width: 1050 },
             {
               view: 'button',
               id: 'clearFormButton',
@@ -502,7 +502,8 @@ const Form = (() => {
       ],
     };
 
-    webix.ui(form).show();
+    return form;
+    // webix.ui(form).show();
   };
 
   const calculateElec = () => {
